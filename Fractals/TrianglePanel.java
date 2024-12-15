@@ -3,9 +3,8 @@ package Fractals;
 import javax.swing.*;
 import java.awt.*;
 
-class FractalPanel extends JPanel {
+public class TrianglePanel extends JPanel {
     private int depth;
-
     public void setDepth(int depth) {
         this.depth = depth;
     }

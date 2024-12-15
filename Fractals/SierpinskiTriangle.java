@@ -3,17 +3,17 @@ package Fractals;
 import javax.swing.*;
 import java.awt.*;
 
-public class SierpinskiTriangleApp extends JFrame {
-    private FractalPanel fractalPanel;
+public class SierpinskiTriangle extends JFrame {
+    private TrianglePanel fractalPanel;
     private JSpinner depthSpinner;
 
-    public SierpinskiTriangleApp() {
+    public SierpinskiTriangle() {
         setTitle("Sierpinski Triangle");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
         
         // Create GUI components
-        fractalPanel = new FractalPanel();
+        fractalPanel = new TrianglePanel();
         depthSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 10, 1));
         depthSpinner.addChangeListener(e -> updateFractal());
 
@@ -33,11 +33,6 @@ public class SierpinskiTriangleApp extends JFrame {
         fractalPanel.repaint();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-		SierpinskiTriangleApp app = new SierpinskiTriangleApp();
-		app.setVisible(true);
-	    });
-    }
+
 }
 
