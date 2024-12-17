@@ -2,16 +2,15 @@ package Fractals;
 
 import Explorer.FractalUpdater;
 import Panels.MandelbrotPanel;
-
-import javax.swing.*;
+import Panels.MandelbrotPanel.ColorScheme;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.*;
 
 public class MandelbrotSet extends JPanel {
     private MandelbrotPanel mandelbrotPanel;
     private JSpinner maxIterations;
     private JSlider zoomSlider;
+    private JComboBox<String> mandelColorBox;
     private JButton colorPicker;
     private Color backgroundColor = Color.BLACK;
 
@@ -36,24 +35,44 @@ public class MandelbrotSet extends JPanel {
 
 
         JPanel controlPanel = new JPanel();
-        controlPanel.add(new JLabel("Recursion Depth:"));
+        controlPanel.add(new JLabel("Iterations:"));
         controlPanel.add(maxIterations);
+        
         controlPanel.add(new JLabel("Zoom:"));
         controlPanel.add(zoomSlider);
 
-        colorPicker = new JButton("Pick Color");
-        colorPicker.addActionListener(e -> {
-            JColorChooser colorChooser = new JColorChooser();
-            Color color = JColorChooser.showDialog(this, "Choose Background Color", Color.black);
-            if (color != null) {
-                backgroundColor = color;
-                mandelbrotPanel.setBackgroundColor(backgroundColor);
-                mandelbrotPanel.repaint();
+        mandelColorBox = new JComboBox<>();
+        mandelColorBox.addItem("Rainbow");
+        mandelColorBox.addItem("Blue Orange");
+        mandelColorBox.addItem("Cool Colors");
+        
+        mandelColorBox.addActionListener(_ ->{
+       
+
+                String selectedItem =(String) mandelColorBox.getSelectedItem();
+
+                switch (selectedItem){
+                    case "Rainbow" -> mandelbrotPanel.setColorScheme(ColorScheme.RAINBOW);
+                    case "Blue Orange" -> mandelbrotPanel.setColorScheme(ColorScheme.BLUE_ORANGE);
+                    case "Cool Colors" -> mandelbrotPanel.setColorScheme(ColorScheme.COOL_COLORS);
+                }
+
+                    mandelbrotPanel.repaint();
             }
-        });
+        );
+        // colorPicker = new JButton("Pick Color");
+        // colorPicker.addActionListener(e -> {
+        //     JColorChooser colorChooser = new JColorChooser();
+        //     Color color = JColorChooser.showDialog(this, "Choose Background Color", Color.black);
+        //     if (color != null) {
+        //         backgroundColor = color;
+        //         mandelbrotPanel.setBackgroundColor(backgroundColor);
+        //         mandelbrotPanel.repaint();
+        //     }
+        // });
 
-        controlPanel.add(colorPicker);
-
+        // controlPanel.add(colorPicker);
+        controlPanel.add(mandelColorBox);
         add(controlPanel, BorderLayout.NORTH);
         add(mandelbrotPanel, BorderLayout.CENTER);
 
