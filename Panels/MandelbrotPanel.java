@@ -69,16 +69,19 @@ public class MandelbrotPanel extends JPanel {
                     i--;
                 }
 
-//                // Color based on iterations
-//                int r = (int) ((i * 255.0) / maxIterations);
-//                int gColor = (int) ((i * 128.0) / maxIterations);
-//                int b = (int) ((i * 64.0) / maxIterations);
-//                g.setColor(new Color(r, gColor, b));
-
+                // Color based on iterations
                 int r = (int) ((i * 255.0) / maxIterations);
                 int gColor = (int) ((i * 128.0) / maxIterations);
                 int b = (int) ((i * 64.0) / maxIterations);
-                g.setColor(backgroundColor);
+                g.setColor(new Color(r, gColor, b)); // fractal shows with this,
+//                //but cant seem to change background color
+
+//                int r = (int) ((i * 255.0) / maxIterations);
+//                int gColor = (int) ((i * 128.0) / maxIterations);
+//                int b = (int) ((i * 64.0) / maxIterations);
+//                g.setColor(backgroundColor); // Changes the background color,
+                // but fractal is not showing
+                //in the process
 
                 g.fillRect(x, y, 1, 1);
             }
