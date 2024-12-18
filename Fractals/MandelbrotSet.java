@@ -8,27 +8,32 @@ import javax.swing.*;
 
 public class MandelbrotSet extends JPanel {
     private MandelbrotPanel mandelbrotPanel;
-    private JSpinner maxIterations;
+    private JComboBox<Integer> maxIterations;
     private JSlider zoomSlider;
     private JComboBox<String> mandelColorBox;
-    private JButton colorPicker;
-    private Color backgroundColor = Color.BLACK;
+
+    // private JButton colorPicker;
+    // private Color backgroundColor = Color.BLACK;
+
 
     public MandelbrotSet(FractalUpdater fractalUpdater) {
         setLayout(new BorderLayout());  // Use BorderLayout for consistent layout
 
         mandelbrotPanel = new MandelbrotPanel();
-        maxIterations = new JSpinner(new SpinnerNumberModel(5, 1, 1000, 1));
+        maxIterations = new JComboBox<>(new Integer[]{25, 50, 100, 250, 500, 1000, 2500});
 
-        maxIterations.addChangeListener(e -> {
+        maxIterations.setSelectedItem(1000);
+        mandelbrotPanel.setMaxIterations((Integer) maxIterations.getSelectedItem());
+
+        maxIterations.addActionListener(_ -> {
             // Pass the selected depth to the fractal panel
-            mandelbrotPanel.setMaxIterations((Integer) maxIterations.getValue());
+            mandelbrotPanel.setMaxIterations((Integer) maxIterations.getSelectedItem());
             mandelbrotPanel.repaint(); // Repaint the panel to update the fractal
         });
 
         // Add Zoom Slider (JSlider for Zoom)
         zoomSlider = new JSlider(50, 1000, 200);  // Range from 50 to 1000 with initial zoom 200
-        zoomSlider.addChangeListener(e -> {
+        zoomSlider.addChangeListener(_ -> {
             mandelbrotPanel.setZoom(zoomSlider.getValue());
             mandelbrotPanel.repaint();
         });

@@ -2,13 +2,18 @@ package Fractals;
 
 import Explorer.FractalUpdater;
 import Panels.TrianglePanel;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class SierpinskiTriangle extends JPanel {
     private TrianglePanel fractalPanel;
     private JSpinner depthSpinner;
+
+    //added constatnts to make it easier to edit later on
+    private static final int INITIAL_DEPTH = 5;
+    private static final int MIN_DEPTH = 1;
+    private static final int MAX_DEPTH = 10;
+    private static final int STEP = 1;
 
     public SierpinskiTriangle(FractalUpdater fractalUpdater) {
         // Set up the panel layout
@@ -16,10 +21,13 @@ public class SierpinskiTriangle extends JPanel {
 
         // Create the fractal panel and the spinner for depth selection
         fractalPanel = new TrianglePanel();
-        depthSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 10, 1));
+        depthSpinner = new JSpinner(new SpinnerNumberModel(INITIAL_DEPTH, MIN_DEPTH, MAX_DEPTH, STEP));
+
+        // Set the depth to the initial depth so it automatically shows it when the app starts
+        fractalPanel.setDepth(INITIAL_DEPTH);
 
         // Update the fractal when the spinner value changes
-        depthSpinner.addChangeListener(e -> {
+        depthSpinner.addChangeListener(_ -> {
             // Pass the selected depth to the fractal panel
             fractalPanel.setDepth((Integer) depthSpinner.getValue());
             fractalPanel.repaint(); // Repaint the panel to update the fractal

@@ -1,7 +1,7 @@
 package Panels;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class TrianglePanel extends JPanel {
     private int depth;

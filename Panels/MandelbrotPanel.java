@@ -12,11 +12,11 @@ public class MandelbrotPanel extends JPanel {
         COOL_COLORS
     }
     private double zoom = 200;
-    private int maxIterations = 500;
+    private int maxIterations = 250;
     private double offsetX = -0.7, offsetY = 0.0;
     private Color backgroundColor ;
     ColorScheme colorScheme = ColorScheme.RAINBOW;
-//    = Color.BLACK;
+    //    = Color.BLACK;
 
     // Set zoom level and max iterations
     public void setZoom(double zoom) {
@@ -88,18 +88,10 @@ public class MandelbrotPanel extends JPanel {
                 pixelColor = Color.BLACK;  // Points inside the Mandelbrot set are black
             } else {
                 switch (colorScheme) {
-                    case RAINBOW:
-                        pixelColor = getRainbowColor(i);
-                        break;
-                    case BLUE_ORANGE:
-                        pixelColor = getBlueOrangeColor(i);
-                        break;
-                    case COOL_COLORS:
-                        pixelColor = getCoolColor(i);
-                        break;
-                    default:
-                        pixelColor = Color.BLACK;
-                        break;
+                    case RAINBOW -> pixelColor = getRainbowColor(i);
+                    case BLUE_ORANGE -> pixelColor = getBlueOrangeColor(i);
+                    case COOL_COLORS -> pixelColor = getCoolColor(i);
+                    default->pixelColor = Color.BLACK;
                 }
             }
             g.setColor(pixelColor);
