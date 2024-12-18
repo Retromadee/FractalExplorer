@@ -6,7 +6,7 @@ import javax.swing.*;
 
 
 public class MandelbrotPanel extends JPanel {
-    public static enum ColorScheme {
+    public  enum ColorScheme {
         RAINBOW,
         BLUE_ORANGE,
         COOL_COLORS

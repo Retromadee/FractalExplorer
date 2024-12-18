@@ -1,6 +1,5 @@
 package Fractals;
 
-import Explorer.FractalUpdater;
 import Panels.TrianglePanel;
 import java.awt.*;
 import javax.swing.*;
@@ -15,7 +14,7 @@ public class SierpinskiTriangle extends JPanel {
     private static final int MAX_DEPTH = 10;
     private static final int STEP = 1;
 
-    public SierpinskiTriangle(FractalUpdater fractalUpdater) {
+    public SierpinskiTriangle(SwingWorker<JPanel, Void> fractalUpdater) {
         // Set up the panel layout
         setLayout(new BorderLayout());
 

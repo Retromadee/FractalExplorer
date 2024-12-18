@@ -1,6 +1,5 @@
 package Fractals;
 
-import Explorer.FractalUpdater;
 import Panels.SnowflakePanel;
 import java.awt.*;
 import javax.swing.*;
@@ -15,7 +14,7 @@ public class KochSnowflake extends JPanel {
     private static final int MAX_DEPTH = 10;
     private static final int STEP = 1;
 
-    public KochSnowflake(FractalUpdater fractalUpdater) {
+    public KochSnowflake(SwingWorker<JPanel, Void> fractalUpdater) {
         setLayout(new BorderLayout());  // Use BorderLayout for consistent layout
 
         

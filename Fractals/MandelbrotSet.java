@@ -1,6 +1,5 @@
 package Fractals;
 
-import Explorer.FractalUpdater;
 import Panels.MandelbrotPanel;
 import Panels.MandelbrotPanel.ColorScheme;
 import java.awt.*;
@@ -16,7 +15,7 @@ public class MandelbrotSet extends JPanel {
     // private Color backgroundColor = Color.BLACK;
 
 
-    public MandelbrotSet(FractalUpdater fractalUpdater) {
+    public MandelbrotSet(SwingWorker<JPanel, Void> fractalUpdater) {
         setLayout(new BorderLayout());  // Use BorderLayout for consistent layout
 
         mandelbrotPanel = new MandelbrotPanel();
