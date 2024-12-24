@@ -47,18 +47,13 @@ public class FractalUpdater {
                     kochSnowflakeInstance = new KochSnowflake(this);
                 }
                 switch (selectedFractal) {
-                    case "Sierpinski Triangle":
-                        
-                        fractalPanel.add(sierpinskiTriangleInstance, BorderLayout.CENTER);
-                        break;
-                    case "Mandelbrot Set":
-                       
-                        fractalPanel.add(mandelbrotSetInstance, BorderLayout.CENTER);
-                        break;
-                    case "Koch Snowflake":
-                       
-                        fractalPanel.add(kochSnowflakeInstance, BorderLayout.CENTER);
-                        break;
+                    
+                    case "Sierpinski Triangle"->fractalPanel.add(sierpinskiTriangleInstance, BorderLayout.CENTER);
+                
+                    case "Mandelbrot Set" -> fractalPanel.add(mandelbrotSetInstance, BorderLayout.CENTER);
+
+                    case "Koch Snowflake"->fractalPanel.add(kochSnowflakeInstance, BorderLayout.CENTER);
+
                 }
                 
                 
