@@ -37,23 +37,26 @@ public class FractalUpdater {
                 JPanel fractalPanel = new JPanel(new BorderLayout());
                 // Adding back the fractals into the SwingWorker,
                 // since we want to thread their processes
+                if (sierpinskiTriangleInstance == null) {
+                    sierpinskiTriangleInstance = new SierpinskiTriangle(this);
+                }
+                if (mandelbrotSetInstance == null) {
+                    mandelbrotSetInstance = new MandelbrotSet(this);
+                }
+                if (kochSnowflakeInstance == null) {
+                    kochSnowflakeInstance = new KochSnowflake(this);
+                }
                 switch (selectedFractal) {
                     case "Sierpinski Triangle":
-                        if (sierpinskiTriangleInstance == null) {
-                            sierpinskiTriangleInstance = new SierpinskiTriangle(this);
-                        }
+                        
                         fractalPanel.add(sierpinskiTriangleInstance, BorderLayout.CENTER);
                         break;
                     case "Mandelbrot Set":
-                        if (mandelbrotSetInstance == null) {
-                            mandelbrotSetInstance = new MandelbrotSet(this);
-                        }
+                       
                         fractalPanel.add(mandelbrotSetInstance, BorderLayout.CENTER);
                         break;
                     case "Koch Snowflake":
-                        if (kochSnowflakeInstance == null) {
-                            kochSnowflakeInstance = new KochSnowflake(this);
-                        }
+                       
                         fractalPanel.add(kochSnowflakeInstance, BorderLayout.CENTER);
                         break;
                 }

@@ -46,7 +46,6 @@ public class KochSnowflake extends JPanel {
     }
     public void setDepth(int depth) {
         depthSpinner.setValue(depth);
-        // fractalPanel.setDepth(depth); 
         snowflakePanel.repaint(); 
     }
 }
