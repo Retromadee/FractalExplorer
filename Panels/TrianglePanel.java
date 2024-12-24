@@ -9,7 +9,13 @@ public class TrianglePanel extends JPanel {
     // Setter for the depth of the fractal
     public void setDepth(int depth) {
         this.depth = depth;
+        System.out.println("Depth set to: " + depth); // Debugging
+        repaint();
     }
+    public int getDepth() {
+        return depth;
+    }
+    
 
     @Override
     protected void paintComponent(Graphics g) {

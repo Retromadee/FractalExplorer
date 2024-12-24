@@ -1,25 +1,29 @@
 package Explorer;
 
+import ClientServer.FractalClient;
 import Fractals.KochSnowflake;
 import Fractals.MandelbrotSet;
 import Fractals.SierpinskiTriangle;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.ExecutionException;
+import javax.swing.*;
 
 public class FractalUpdater {
     private JPanel fractalContainer;
     private JComboBox<String> fractalComboBox;
+    private SierpinskiTriangle sierpinskiTriangleInstance;
+    private KochSnowflake kochSnowflakeInstance;
+    private MandelbrotSet mandelbrotSetInstance;
 
     public FractalUpdater(JPanel fractalContainer, JComboBox<String> fractalComboBox) {
         this.fractalContainer = fractalContainer;
         this.fractalComboBox = fractalComboBox;
+        
     }
 
     public void updateFractal() {
         String selectedFractal = (String) fractalComboBox.getSelectedItem();
-
+        
         // Remove any existing fractal panel
         fractalContainer.removeAll();
         
@@ -35,17 +39,29 @@ public class FractalUpdater {
                 // since we want to thread their processes
                 switch (selectedFractal) {
                     case "Sierpinski Triangle":
-                        fractalPanel.add(new SierpinskiTriangle(this), BorderLayout.CENTER);
+                        if (sierpinskiTriangleInstance == null) {
+                            sierpinskiTriangleInstance = new SierpinskiTriangle(this);
+                        }
+                        fractalPanel.add(sierpinskiTriangleInstance, BorderLayout.CENTER);
                         break;
                     case "Mandelbrot Set":
-                        fractalPanel.add(new MandelbrotSet(this), BorderLayout.CENTER);
+                        if (mandelbrotSetInstance == null) {
+                            mandelbrotSetInstance = new MandelbrotSet(this);
+                        }
+                        fractalPanel.add(mandelbrotSetInstance, BorderLayout.CENTER);
                         break;
                     case "Koch Snowflake":
-                        fractalPanel.add(new KochSnowflake(this), BorderLayout.CENTER);
+                        if (kochSnowflakeInstance == null) {
+                            kochSnowflakeInstance = new KochSnowflake(this);
+                        }
+                        fractalPanel.add(kochSnowflakeInstance, BorderLayout.CENTER);
                         break;
                 }
                 
+                
 //                Thread.sleep(1000);
+                System.out.println("Selected Fractal: " + selectedFractal);
+
                 return fractalPanel;
             }
             @Override
@@ -65,4 +81,37 @@ public class FractalUpdater {
             }
         }.execute();
     }
+    public SierpinskiTriangle getTriangleInstance(){
+        return sierpinskiTriangleInstance;
+    }
+    public KochSnowflake getKochSnowflakeInstance(){
+        return kochSnowflakeInstance;
+    }
+    public MandelbrotSet getMandelbrotSetInstance(){
+        return mandelbrotSetInstance;
+    }
+    public void sendParametersToClient(){
+        String selectedFractal = (String) fractalComboBox.getSelectedItem();
+        int depth = -1;
+    
+        
+        switch (selectedFractal) {
+            case "Sierpinski Triangle":
+                depth = sierpinskiTriangleInstance.getDepth();
+                
+                break;
+            case "Koch Snowflake":
+                depth = kochSnowflakeInstance.getDepth();
+                break;
+            case "Mandelbrot Set":
+                depth = mandelbrotSetInstance.getIterations();
+                break;
+            default:
+                throw new AssertionError();
+        }
+        String parameters = selectedFractal + " depth:" + depth;
+        FractalClient.sendFractalParameters(parameters);
+    }
+    
 }
+

@@ -102,4 +102,7 @@ public class MandelbrotSet extends JPanel {
 //            }
 //        });
     }
+    public int getIterations(){
+        return (Integer) maxIterations.getSelectedItem();
+    }
 }
