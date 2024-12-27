@@ -51,18 +51,15 @@ public class MandelbrotSet extends JPanel {
         mandelColorBox.addItem("Cool Colors");
         
         mandelColorBox.addActionListener(_ ->{
-       
+            String selectedItem =(String) mandelColorBox.getSelectedItem();
 
-                String selectedItem =(String) mandelColorBox.getSelectedItem();
-
-                switch (selectedItem){
-                    case "Rainbow" -> mandelbrotPanel.setColorScheme(ColorScheme.RAINBOW);
-                    case "Blue Orange" -> mandelbrotPanel.setColorScheme(ColorScheme.BLUE_ORANGE);
-                    case "Cool Colors" -> mandelbrotPanel.setColorScheme(ColorScheme.COOL_COLORS);
-                }
-
-                    // mandelbrotPanel.repaint();
+            switch (selectedItem){
+                case "Rainbow" -> mandelbrotPanel.setColorScheme(ColorScheme.RAINBOW);
+                case "Blue Orange" -> mandelbrotPanel.setColorScheme(ColorScheme.BLUE_ORANGE);
+                case "Cool Colors" -> mandelbrotPanel.setColorScheme(ColorScheme.COOL_COLORS);
             }
+                // mandelbrotPanel.repaint();
+            }   
         );
         // colorPicker = new JButton("Pick Color");
         // colorPicker.addActionListener(e -> {
@@ -82,28 +79,37 @@ public class MandelbrotSet extends JPanel {
         add(mandelbrotPanel, BorderLayout.CENTER);
 
         // Enable mouse click to zoom into the clicked part
-//        mandelbrotPanel.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                int mouseX = e.getX();
-//                int mouseY = e.getY();
-//
-//                // Convert mouse coordinates to Mandelbrot coordinates
-//                double clickX = (mouseX - mandelbrotPanel.getWidth() / 2) /
-//                        mandelbrotPanel.getZoom() + mandelbrotPanel.getOffsetX();
-//                double clickY = (mouseY - mandelbrotPanel.getHeight() / 2) /
-//                        mandelbrotPanel.getZoom() + mandelbrotPanel.getOffsetY();
-//
-//                // Update offsets based on click location
-//                mandelbrotPanel.setOffsetX(clickX);
-//                mandelbrotPanel.setOffsetY(clickY);
-//
-//                // Repaint after updating the center of the zoom
-//                mandelbrotPanel.repaint();
-//            }
-//        });
-    }
-    public int getIterations(){
-        return (Integer) maxIterations.getSelectedItem();
-    }
+        //        mandelbrotPanel.addMouseListener(new MouseAdapter() {
+        //            @Override
+        //            public void mousePressed(MouseEvent e) {
+        //                int mouseX = e.getX();
+        //                int mouseY = e.getY();
+        //
+        //                // Convert mouse coordinates to Mandelbrot coordinates
+        //                double clickX = (mouseX - mandelbrotPanel.getWidth() / 2) /
+        //                        mandelbrotPanel.getZoom() + mandelbrotPanel.getOffsetX();
+        //                double clickY = (mouseY - mandelbrotPanel.getHeight() / 2) /
+        //                        mandelbrotPanel.getZoom() + mandelbrotPanel.getOffsetY();
+        //
+        //                // Update offsets based on click location
+        //                mandelbrotPanel.setOffsetX(clickX);
+        //                mandelbrotPanel.setOffsetY(clickY);
+        //
+        //                // Repaint after updating the center of the zoom
+        //                mandelbrotPanel.repaint();
+        //            }
+        //        });
+        }
+        public int getIterations(){
+            return (Integer) maxIterations.getSelectedItem();
+        }
+        public String getColorScheme(){
+            return (String) mandelColorBox.getSelectedItem();
+        }
+        public void setMaxIterations(int iterations){
+            mandelbrotPanel.setMaxIterations(iterations);
+        }
+        public void setColorScheme(ColorScheme colorScheme){
+            mandelbrotPanel.setColorScheme(colorScheme);
+        }
 }

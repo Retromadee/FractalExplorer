@@ -16,7 +16,7 @@ public class FractalClient {
         }
     }
 
-    public static void main(String[] args) {
-        sendFractalParameters("Type: Sierpinski, Depth: 5");
-    }
+    // public static void main(String[] args) {
+    //     sendFractalParameters("Type: Sierpinski, Depth: 5");
+    // }
 }

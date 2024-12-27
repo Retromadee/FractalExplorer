@@ -19,7 +19,7 @@ public class KochSnowflake extends JPanel {
     private Color selectedColor = Color.BLACK; 
 
     public KochSnowflake(SwingWorker<JPanel, Void> fractalUpdater) {
-        setLayout(new BorderLayout());  // Use BorderLayout for consistent layout
+        setLayout(new BorderLayout());
 
         
 
@@ -42,9 +42,8 @@ public class KochSnowflake extends JPanel {
         snowflakePanel.setDepth(INITIAL_DEPTH);
 
         depthSpinner.addChangeListener(_ -> {
-            // Pass the selected depth to the fractal panel
             snowflakePanel.setDepth((Integer) depthSpinner.getValue());
-            snowflakePanel.repaint(); // Repaint the panel to update the fractal
+            snowflakePanel.repaint(); 
         });
 
         JPanel controlPanel = new JPanel();
@@ -54,16 +53,19 @@ public class KochSnowflake extends JPanel {
 
         add(controlPanel, BorderLayout.NORTH);
         add(snowflakePanel, BorderLayout.CENTER);
-        
-
-        // fractalUpdater.updateFractal();
     }
     
     public int getDepth() {  
-        return (Integer) depthSpinner.getValue();
+        return snowflakePanel.getDepth();
     }
     public void setDepth(int depth) {
         depthSpinner.setValue(depth);
-        snowflakePanel.repaint(); 
+    }
+    public void setColor(String colorString){
+        Color color = Color.decode(colorString);
+        snowflakePanel.setColor(color);
+    }
+    public Color getColor(){
+        return snowflakePanel.getcolor();
     }
 }

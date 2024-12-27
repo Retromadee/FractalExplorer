@@ -24,6 +24,9 @@ public class TrianglePanel extends JPanel {
     public void setBackgroundColor(Color color){
         this.backgroundColor= color;
     }
+    public Color getcolor(){
+        return color;
+    }
     
 
     @Override

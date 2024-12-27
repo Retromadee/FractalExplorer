@@ -22,7 +22,6 @@ public class FractalUpdater {
     }
 
     public void updateFractal() {
-        System.out.println("updateFractal() is being called");
         String selectedFractal = (String) fractalComboBox.getSelectedItem();
         
         // Remove any existing fractal panel to ensure a clean update
@@ -89,23 +88,28 @@ public class FractalUpdater {
     public void sendParametersToClient(){
         String selectedFractal = (String) fractalComboBox.getSelectedItem();
         int depth = -1;
-    
+        String colorString = "#FFFFFF";
+        Color color = Color.BLUE;
         
         switch (selectedFractal) {
             case "Sierpinski Triangle":
                 depth = sierpinskiTriangleInstance.getDepth();
-                
+                color = sierpinskiTriangleInstance.getColor();
+                colorString = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
                 break;
             case "Koch Snowflake":
                 depth = kochSnowflakeInstance.getDepth();
+                color = kochSnowflakeInstance.getColor();
+                colorString = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
                 break;
             case "Mandelbrot Set":
                 depth = mandelbrotSetInstance.getIterations();
+                System.out.println(mandelbrotSetInstance.getColorScheme());
                 break;
             default:
                 throw new AssertionError();
         }
-        String parameters = selectedFractal + " depth:" + depth;
+        String parameters = selectedFractal + " depth:" + depth + " color:" + colorString;
         FractalClient.sendFractalParameters(parameters);
     }
     

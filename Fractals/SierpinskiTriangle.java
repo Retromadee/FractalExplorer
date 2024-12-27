@@ -16,7 +16,7 @@ public class SierpinskiTriangle extends JPanel {
     private static final int MAX_DEPTH = 7;
     private static final int STEP = 1;
 
-    private Color selectedColor = Color.BLACK; 
+    private Color selectedColor = Color.BLUE; 
 
     
 
@@ -35,7 +35,7 @@ public class SierpinskiTriangle extends JPanel {
             Color newColor = JColorChooser.showDialog(this, "Choose Fractal Color", selectedColor);
             if (newColor != null) {
                 selectedColor = newColor;
-                trianglePanel.setColor(selectedColor);
+                trianglePanel.setColor(newColor);
                 trianglePanel.repaint();
             }
         });
@@ -72,6 +72,12 @@ public class SierpinskiTriangle extends JPanel {
         // fractalPanel.setDepth(depth); 
         trianglePanel.repaint(); 
     }
-    
+    public Color getColor(){
+        return trianglePanel.getcolor();
+    }
+    public void setColor(String colorString){
+        Color color = Color.decode(colorString);
+        trianglePanel.setColor(color);
+    }
     }
 

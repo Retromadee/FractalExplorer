@@ -143,30 +143,36 @@ public class FractalExplorer extends JFrame {
         MandelbrotSet mandelBrotInstance = fractalUpdater.getMandelbrotSetInstance();
         KochSnowflake kochSnowflakeInstance = fractalUpdater.getKochSnowflakeInstance();
 
-        String regex = "(Mandelbrot Set|Sierpinski Triangle|Koch Snowflake)\\s+depth:(\\d+)";
+        String regex = "(Mandelbrot Set|Sierpinski Triangle|Koch Snowflake)\\s+depth:(\\d+)\\s+color:(#[0-9a-fA-F]{6})";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
 
         if(matcher.matches()){
             String fractalType = matcher.group(1);
             String depth = matcher.group(2);
-            System.out.println("The type is "+ fractalType);
+            String color = matcher.group(3);
 
             switch (fractalType) {
                 case "Sierpinski Triangle":
                     SwingUtilities.invokeLater(()->{
                         triangleInstance.setDepth(Integer.parseInt(depth));
                         fractalComboBox.setSelectedItem(fractalType);
+
+                        triangleInstance.setColor(color);
                     });
                     break;
                 case "Koch Snowflake":
-                SwingUtilities.invokeLater(()->{
-                    kochSnowflakeInstance.setDepth(Integer.parseInt(depth));
-                    fractalComboBox.setSelectedItem(fractalType);   
-                });
+                    SwingUtilities.invokeLater(()->{
+                        kochSnowflakeInstance.setDepth(Integer.parseInt(depth));
+                        fractalComboBox.setSelectedItem(fractalType);  
+                        kochSnowflakeInstance.setColor(color); 
+                    });
                     break;
                 case "Mandelbrot Set":
-                  
+                    SwingUtilities.invokeLater(()->{
+                        mandelBrotInstance.setMaxIterations(Integer.parseInt(depth));
+                        fractalComboBox.setSelectedItem(fractalType);  
+                    });
                     break;
                 default:
                     throw new AssertionError();
