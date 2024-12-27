@@ -6,6 +6,9 @@ import javax.swing.*;
 public class TrianglePanel extends JPanel {
     private int depth;
 
+    private Color color = Color.BLUE;
+    private Color backgroundColor = color.WHITE;
+
     // Setter for the depth of the fractal
     public void setDepth(int depth) {
         this.depth = depth;
@@ -15,13 +18,19 @@ public class TrianglePanel extends JPanel {
     public int getDepth() {
         return depth;
     }
+    public void setColor(Color color){
+        this.color = color;
+    }
+    public void setBackgroundColor(Color color){
+        this.backgroundColor= color;
+    }
     
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(Color.WHITE); // Set background color
-        g.setColor(Color.BLUE); // Set fractal color
+        setBackground(backgroundColor); // Set background color
+        g.setColor(color); // Set fractal color
         drawTriangle(g, getWidth() / 2, 50, 400, depth); // Draw the triangle
     }
 
