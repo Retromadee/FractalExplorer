@@ -27,14 +27,14 @@ public class MandelbrotSet extends JPanel {
         maxIterations.addActionListener(_ -> {
             // Pass the selected depth to the fractal panel
             mandelbrotPanel.setMaxIterations((Integer) maxIterations.getSelectedItem());
-            mandelbrotPanel.repaint(); // Repaint the panel to update the fractal
+            // mandelbrotPanel.repaint(); // Repaint the panel to update the fractal
         });
 
         // Add Zoom Slider (JSlider for Zoom)
         zoomSlider = new JSlider(50, 1000, 200);  // Range from 50 to 1000 with initial zoom 200
         zoomSlider.addChangeListener(_ -> {
             mandelbrotPanel.setZoom(zoomSlider.getValue());
-            mandelbrotPanel.repaint();
+            // mandelbrotPanel.repaint();
         });
 
 
@@ -61,7 +61,7 @@ public class MandelbrotSet extends JPanel {
                     case "Cool Colors" -> mandelbrotPanel.setColorScheme(ColorScheme.COOL_COLORS);
                 }
 
-                    mandelbrotPanel.repaint();
+                    // mandelbrotPanel.repaint();
             }
         );
         // colorPicker = new JButton("Pick Color");
@@ -76,6 +76,7 @@ public class MandelbrotSet extends JPanel {
         // });
 
         // controlPanel.add(colorPicker);
+        // mandelbrotPanel.repaint();
         controlPanel.add(mandelColorBox);
         add(controlPanel, BorderLayout.NORTH);
         add(mandelbrotPanel, BorderLayout.CENTER);

@@ -22,21 +22,18 @@ public class FractalUpdater {
     }
 
     public void updateFractal() {
+        System.out.println("updateFractal() is being called");
         String selectedFractal = (String) fractalComboBox.getSelectedItem();
         
-        // Remove any existing fractal panel
+        // Remove any existing fractal panel to ensure a clean update
         fractalContainer.removeAll();
         
-        // Creating the Mulithreading with SwingWorker ;
-        // Apparently its more Swing friendly than Executor,
-        // and runnable is just a no chance.
-        
-        new SwingWorker<JPanel, Void>(){
+        // Start the background process with SwingWorker
+        new SwingWorker<JPanel, Void>() {
             @Override
             protected JPanel doInBackground() throws Exception {
                 JPanel fractalPanel = new JPanel(new BorderLayout());
-                // Adding back the fractals into the SwingWorker,
-                // since we want to thread their processes
+                // Initialize the fractals if not already done
                 if (sierpinskiTriangleInstance == null) {
                     sierpinskiTriangleInstance = new SierpinskiTriangle(this);
                 }
@@ -46,39 +43,40 @@ public class FractalUpdater {
                 if (kochSnowflakeInstance == null) {
                     kochSnowflakeInstance = new KochSnowflake(this);
                 }
+    
+                // Switch case for selected fractal and add it to the panel
                 switch (selectedFractal) {
-                    
-                    case "Sierpinski Triangle"->fractalPanel.add(sierpinskiTriangleInstance, BorderLayout.CENTER);
-                
-                    case "Mandelbrot Set" -> fractalPanel.add(mandelbrotSetInstance, BorderLayout.CENTER);
-
-                    case "Koch Snowflake"->fractalPanel.add(kochSnowflakeInstance, BorderLayout.CENTER);
-
+                    case "Sierpinski Triangle":
+                        fractalPanel.add(sierpinskiTriangleInstance, BorderLayout.CENTER);
+                        break;
+                    case "Mandelbrot Set":
+                        fractalPanel.add(mandelbrotSetInstance, BorderLayout.CENTER);
+                        break;
+                    case "Koch Snowflake":
+                        fractalPanel.add(kochSnowflakeInstance, BorderLayout.CENTER);
+                        break;
+                    default:
+                        throw new AssertionError("Unknown fractal type");
                 }
-                
-                
-//                Thread.sleep(1000);
-                System.out.println("Selected Fractal: " + selectedFractal);
-
+    
                 return fractalPanel;
             }
+    
             @Override
-            protected void done(){
+            protected void done() {
                 try {
-                    JPanel fractalPanel = get();
-                    fractalContainer.add(fractalPanel,BorderLayout.CENTER);
-                    // Revalidate and repaint the container to display the selected fractal
+                    JPanel fractalPanel = get(); // Get the fractal panel created in doInBackground
+                    // Ensure the new panel is added to the container and UI is updated
+                    fractalContainer.add(fractalPanel, BorderLayout.CENTER);
                     fractalContainer.revalidate();
                     fractalContainer.repaint();
-                    
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
                 }
             }
         }.execute();
     }
+    
     public SierpinskiTriangle getTriangleInstance(){
         return sierpinskiTriangleInstance;
     }

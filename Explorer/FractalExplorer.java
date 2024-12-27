@@ -44,7 +44,7 @@ public class FractalExplorer extends JFrame {
         fractalUpdater = new FractalUpdater(fractalContainer, fractalComboBox);
 
         // ActionListener for JComboBox
-        fractalComboBox.addActionListener(e -> fractalUpdater.updateFractal());
+        fractalComboBox.addActionListener(_ -> fractalUpdater.updateFractal());
 
         // Server Label
         serverLabel = new JLabel("server not started");
