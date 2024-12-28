@@ -2,6 +2,7 @@ package Fractals;
 
 import Panels.TrianglePanel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class SierpinskiTriangle extends JPanel {
@@ -9,6 +10,7 @@ public class SierpinskiTriangle extends JPanel {
     private JSpinner depthSpinner;
     private JButton colorPickerButton;
     private JColorChooser colorPicker;
+
 
     //added constatnts to make it easier to edit later on
     private static final int INITIAL_DEPTH = 3;
@@ -21,7 +23,6 @@ public class SierpinskiTriangle extends JPanel {
     
 
     public SierpinskiTriangle(SwingWorker<JPanel, Void> fractalUpdater) {
-        // Set up the panel layout
         setLayout(new BorderLayout());
 
         // Create the fractal panel and the spinner for depth selection
@@ -29,6 +30,7 @@ public class SierpinskiTriangle extends JPanel {
 
         colorPicker = new JColorChooser();
         colorPickerButton = new JButton("Pick A Color");
+
        
 
         colorPickerButton.addActionListener(_ -> {
@@ -48,7 +50,7 @@ public class SierpinskiTriangle extends JPanel {
         depthSpinner.addChangeListener(_ -> {
             // Pass the selected depth to the fractal panel
             trianglePanel.setDepth((Integer) depthSpinner.getValue());
-            trianglePanel.repaint(); // Repaint the panel to update the fractal
+            trianglePanel.repaint(); 
         });
 
         // Create the control panel for the spinner
@@ -63,21 +65,29 @@ public class SierpinskiTriangle extends JPanel {
         
         
         }
-         // Method to return the current depth as a string
-    public int getDepth() {  
-        return (Integer) depthSpinner.getValue();
-    }
-    public void setDepth(int depth) {
-        depthSpinner.setValue(depth);
-        // fractalPanel.setDepth(depth); 
-        trianglePanel.repaint(); 
-    }
-    public Color getColor(){
-        return trianglePanel.getcolor();
-    }
-    public void setColor(String colorString){
-        Color color = Color.decode(colorString);
-        trianglePanel.setColor(color);
-    }
+        public BufferedImage captureFractal() {
+            BufferedImage image = new BufferedImage(trianglePanel.getWidth(), trianglePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = image.createGraphics();
+            trianglePanel.paint(g2d);
+            g2d.dispose();
+            return image;
+        } 
+        // Method to return the current depth as a string
+        public int getDepth() {  
+            return (Integer) depthSpinner.getValue();
+        }
+        public void setDepth(int depth) {
+            depthSpinner.setValue(depth);
+            // fractalPanel.setDepth(depth); 
+            trianglePanel.repaint(); 
+        }
+        public Color getColor(){
+            return trianglePanel.getcolor();
+        }
+        public void setColor(String colorString){
+            Color color = Color.decode(colorString);
+            trianglePanel.setColor(color);
+        }
+    
     }
 

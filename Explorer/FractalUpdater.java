@@ -5,7 +5,11 @@ import Fractals.KochSnowflake;
 import Fractals.MandelbrotSet;
 import Fractals.SierpinskiTriangle;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class FractalUpdater {
@@ -14,6 +18,7 @@ public class FractalUpdater {
     private SierpinskiTriangle sierpinskiTriangleInstance;
     private KochSnowflake kochSnowflakeInstance;
     private MandelbrotSet mandelbrotSetInstance;
+    private BufferedImage image;
 
     public FractalUpdater(JPanel fractalContainer, JComboBox<String> fractalComboBox) {
         this.fractalContainer = fractalContainer;
@@ -85,11 +90,39 @@ public class FractalUpdater {
     public MandelbrotSet getMandelbrotSetInstance(){
         return mandelbrotSetInstance;
     }
+    
+    public void saveFractal() {
+        String selectedFractal = (String) fractalComboBox.getSelectedItem();
+        File outputFile;
+        switch (selectedFractal){
+    
+            case "Sierpinski Triangle": 
+                image = sierpinskiTriangleInstance.captureFractal();
+                outputFile = new File("Sierpinski Triangle Fractal.png");
+                break;
+            case "Koch Snowflake":
+                image = kochSnowflakeInstance.captureFractal();
+                outputFile = new File("Koch Snowflake Fractal.png");
+                break;
+            case "Mandelbrot Set":
+                image = mandelbrotSetInstance.captureFractal();  
+                outputFile = new File("MandelBrot Set Fractal.png");  
+                break;
+            default:
+                throw new AssertionError();}
+        try {
+            ImageIO.write(image, "PNG", outputFile);
+            System.out.println("Fractal saved as image.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error saving fractal image.");
+        }
+    } 
     public void sendParametersToClient(){
         String selectedFractal = (String) fractalComboBox.getSelectedItem();
-        int depth = -1;
+        int depth;
         String colorString = "#FFFFFF";
-        Color color = Color.BLUE;
+        Color color;
         
         switch (selectedFractal) {
             case "Sierpinski Triangle":
@@ -104,6 +137,7 @@ public class FractalUpdater {
                 break;
             case "Mandelbrot Set":
                 depth = mandelbrotSetInstance.getIterations();
+                colorString = mandelbrotSetInstance.getColorScheme();
                 System.out.println(mandelbrotSetInstance.getColorScheme());
                 break;
             default:

@@ -3,6 +3,7 @@ package Fractals;
 import Panels.MandelbrotPanel;
 import Panels.MandelbrotPanel.ColorScheme;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class MandelbrotSet extends JPanel {
@@ -108,8 +109,26 @@ public class MandelbrotSet extends JPanel {
         }
         public void setMaxIterations(int iterations){
             mandelbrotPanel.setMaxIterations(iterations);
+            maxIterations.setSelectedItem(iterations);
         }
-        public void setColorScheme(ColorScheme colorScheme){
-            mandelbrotPanel.setColorScheme(colorScheme);
+        public void setColorScheme(String scheme) {
+            ColorScheme cScheme = ColorScheme.valueOf(scheme.toUpperCase().replace(" ", "_"));
+            mandelbrotPanel.setColorScheme(cScheme); 
+        
+            String displayScheme = switch (cScheme) {
+                case RAINBOW -> "Rainbow";
+                case BLUE_ORANGE -> "Blue Orange";
+                case COOL_COLORS -> "Cool Colors";
+            };
+            mandelColorBox.setSelectedItem(displayScheme); 
+        }
+        
+        
+        public BufferedImage captureFractal() {
+            BufferedImage image = new BufferedImage(mandelbrotPanel.getWidth(), mandelbrotPanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = image.createGraphics();
+            mandelbrotPanel.paint(g2d);
+            g2d.dispose();
+            return image;
         }
 }

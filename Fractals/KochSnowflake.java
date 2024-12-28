@@ -2,6 +2,7 @@ package Fractals;
 
 import Panels.SnowflakePanel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class KochSnowflake extends JPanel {
@@ -53,6 +54,13 @@ public class KochSnowflake extends JPanel {
 
         add(controlPanel, BorderLayout.NORTH);
         add(snowflakePanel, BorderLayout.CENTER);
+    }
+    public BufferedImage captureFractal() {
+        BufferedImage image = new BufferedImage(snowflakePanel.getWidth(), snowflakePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = image.createGraphics();
+        snowflakePanel.paint(g2d);
+        g2d.dispose();
+        return image;
     }
     
     public int getDepth() {  

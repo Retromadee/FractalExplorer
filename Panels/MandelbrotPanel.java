@@ -21,7 +21,7 @@ public class MandelbrotPanel extends JPanel {
     // Set zoom level and max iterations
     public void setZoom(double zoom) {
         this.zoom = zoom;
-        generateFractalImage(); // Re-generate the image when zoom changes
+        generateFractalImage();
     }
 
     public double getZoom() {
@@ -30,7 +30,7 @@ public class MandelbrotPanel extends JPanel {
 
     public void setMaxIterations(int maxIterations) {
         this.maxIterations = maxIterations;
-        generateFractalImage(); // Re-generate the image when iterations change
+        generateFractalImage();
     }
 
     public double getOffsetX() {
@@ -43,22 +43,22 @@ public class MandelbrotPanel extends JPanel {
 
     public void setOffsetX(double offsetX) {
         this.offsetX = offsetX;
-        generateFractalImage(); // Re-generate the image when offset changes
+        generateFractalImage();
     }
 
     public void setOffsetY(double offsetY) {
         this.offsetY = offsetY;
-        generateFractalImage(); // Re-generate the image when offset changes
+        generateFractalImage(); 
     }
 
     public void setBackgroundColor(Color color) {
         this.backgroundColor = color;
-        generateFractalImage(); // Re-generate the image when background changes
+        generateFractalImage();
     }
 
     public void setColorScheme(ColorScheme scheme) {
         this.colorScheme = scheme;
-        generateFractalImage(); // Re-generate the image when color scheme changes
+        generateFractalImage();
     }
 
     public void generateFractalImage() {
