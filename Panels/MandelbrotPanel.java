@@ -1,13 +1,12 @@
 package Panels;
 
 import Presets.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.*;
 
 public class MandelbrotPanel extends JPanel {
     public enum ColorScheme {
@@ -45,7 +44,9 @@ public class MandelbrotPanel extends JPanel {
         };
         
         presetPanel = new PresetPanel("Mandelbrot", loadCallback, saveCallback);
-        add(presetPanel, BorderLayout.NORTH);
+    }
+    public PresetPanel getPresetPanel() {
+        return presetPanel;  
     }
     
     public void setZoom(double zoom) {

@@ -1,11 +1,11 @@
 package Presets;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.Map;
+import javax.swing.*;
 
-public class PresetPanel extends JPanel {
+public class PresetPanel extends JDialog {
     private final PresetManager presetManager;
     private final JComboBox<FractalPreset> presetComboBox;
     private final String fractalType;
@@ -35,9 +35,18 @@ public class PresetPanel extends JPanel {
         JButton loadButton = new JButton("Load Preset");
         JButton deleteButton = new JButton("Delete Preset");
         
-        saveButton.addActionListener(e -> saveCurrentAsPreset());
-        loadButton.addActionListener(e -> loadSelectedPreset());
-        deleteButton.addActionListener(e -> deleteSelectedPreset());
+        saveButton.addActionListener(e -> {
+            saveCurrentAsPreset();
+            pack();
+        });
+        loadButton.addActionListener(e -> {
+            loadSelectedPreset();
+            pack();
+        });
+        deleteButton.addActionListener(e -> {
+            deleteSelectedPreset();
+            pack();
+        });
         
         add(new JLabel("Presets:"));
         add(presetComboBox);

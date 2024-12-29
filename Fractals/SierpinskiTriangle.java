@@ -1,7 +1,7 @@
 package Fractals;
 
 import Panels.TrianglePanel;
-
+import Presets.PresetPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -62,6 +62,9 @@ public class SierpinskiTriangle extends JPanel {
         trianglePanel.setDepth(INITIAL_DEPTH);
         trianglePanel.setColorScheme("Classic");
     }
+    public PresetPanel getPresetPanel() {
+            return trianglePanel.getPresetPanel();
+        }
     
     public BufferedImage captureFractal() {
         BufferedImage image = new BufferedImage(trianglePanel.getWidth(), trianglePanel.getHeight(), BufferedImage.TYPE_INT_RGB);

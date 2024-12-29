@@ -4,6 +4,7 @@ import ClientServer.FractalServer;
 import Fractals.KochSnowflake;
 import Fractals.MandelbrotSet;
 import Fractals.SierpinskiTriangle;
+import Presets.PresetPanel;
 import java.awt.*;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -22,9 +23,9 @@ public class FractalExplorer extends JFrame {
     private FractalHistory.FractalState fractalState;
     private JButton undoButton;
     private JButton redoButton;
-
-    private JMenu menu;
-    private JMenuItem serverSettingsMenuItem, saveImagMenuItem;
+    private JMenuBar menuBar = new JMenuBar();;
+    private JMenu menu, presetMenu;
+    private JMenuItem serverSettingsMenuItem, saveImagMenuItem, presetsMenuItem;
     
 
 
@@ -82,24 +83,29 @@ public class FractalExplorer extends JFrame {
 
         // Server Start Button
         serverButton = new JButton("Start Server");
-        serverButton.addActionListener(_ -> {startServer();});
+        serverButton.addActionListener(_ -> {
+            startServer();
+
+        });
         
         //Server Stop Button
         stopServerButton = new JButton("Stop Server");
         stopServerButton.setVisible(false);
         stopServerButton.setEnabled(false);
-        stopServerButton.addActionListener(_ -> stopServer()); 
+        stopServerButton.addActionListener(_ ->{
+            stopServer();
+
+        }); 
 
         //Sending Configs Button
         sendConfig = new JButton("Send Config");
         sendConfig.addActionListener(_ -> fractalUpdater.sendParametersToClient());
 
         //Menu Bar
-        
-        JMenuBar menuBar = new JMenuBar();
+        presetMenu = new JMenu("Presets");
         menu = new JMenu("Options");
         menuBar.add(menu);
-        
+        menuBar.add(presetMenu);
 
         //Server Settings MenuItem
         serverSettingsMenuItem = new JMenuItem("Server Settings");
@@ -108,9 +114,14 @@ public class FractalExplorer extends JFrame {
             serverDialog.setVisible(true);
         });
 
+
         //Save as Image MenuItem
         saveImagMenuItem= new JMenuItem("Save As Image");
         saveImagMenuItem.addActionListener(_ -> fractalUpdater.saveFractal());
+
+        //Presets MenuItem
+        presetsMenuItem = new JMenuItem("Preset Settings");
+        presetsMenuItem.addActionListener(_ -> showPresetPanel());
 
         serverPanel.add(serverButton);
         serverPanel.add(stopServerButton);
@@ -125,13 +136,23 @@ public class FractalExplorer extends JFrame {
         add(controlPanel, BorderLayout.NORTH);
         add(fractalContainer, BorderLayout.CENTER);
 
+        presetMenu.add(presetsMenuItem);
+
         menu.add(serverSettingsMenuItem);
         menu.add(saveImagMenuItem);
         setJMenuBar(menuBar);
         
-        
-        // Initially display a fractal
         fractalUpdater.updateFractal();
+    }
+     private void showPresetPanel() {
+        PresetPanel presetFrame = fractalUpdater.getPresetPanel();
+        presetFrame.setTitle("Preset Settings");
+        presetFrame.setSize(400, 300); 
+        presetFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        presetFrame.pack();
+        presetFrame.setLocationRelativeTo(this);
+        presetFrame.setVisible(true); 
     }
     
     public void updateUndoRedoButtons() {

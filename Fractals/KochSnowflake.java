@@ -2,7 +2,7 @@ package Fractals;
 
 import Panels.SnowflakePanel;
 import Panels.SnowflakePanel.ColorScheme;
-
+import Presets.PresetPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -60,6 +60,9 @@ public class KochSnowflake extends JPanel {
         // Initial setup
         snowflakePanel.setDepth(INITIAL_DEPTH);
     }
+    public PresetPanel getPresetPanel() {
+            return snowflakePanel.getPresetPanel();
+        }
     
     public BufferedImage captureFractal() {
         return snowflakePanel.captureFractal();

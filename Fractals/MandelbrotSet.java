@@ -2,6 +2,7 @@ package Fractals;
 
 import Panels.MandelbrotPanel;
 import Panels.MandelbrotPanel.ColorScheme;
+import Presets.PresetPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class MandelbrotSet extends JPanel {
 
 
     public MandelbrotSet(SwingWorker<JPanel, Void> fractalUpdater) {
-        setLayout(new BorderLayout());  // Use BorderLayout for consistent layout
+        setLayout(new BorderLayout());
 
         mandelbrotPanel = new MandelbrotPanel();
         maxIterations = new JComboBox<>(new Integer[]{25, 50, 100, 250, 500, 1000, 2500});
@@ -100,6 +101,15 @@ public class MandelbrotSet extends JPanel {
         //                mandelbrotPanel.repaint();
         //            }
         //        });
+        }
+        public void updateGui(){
+            maxIterations.setSelectedItem((Integer) mandelbrotPanel.getMaxIterations());
+            Double zoom = mandelbrotPanel.getZoom();
+            zoomSlider.setValue((Integer) zoom.intValue());
+            mandelColorBox.setSelectedItem((ColorScheme) mandelbrotPanel.getColorScheme());
+        }
+        public PresetPanel getPresetPanel() {
+            return mandelbrotPanel.getPresetPanel();
         }
         public int getIterations(){
             return (Integer) maxIterations.getSelectedItem();

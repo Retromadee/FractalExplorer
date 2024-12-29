@@ -4,6 +4,7 @@ import ClientServer.FractalClient;
 import Fractals.KochSnowflake;
 import Fractals.MandelbrotSet;
 import Fractals.SierpinskiTriangle;
+import Presets.PresetPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,6 +24,7 @@ public class FractalUpdater {
     private FractalHistory.FractalState fractalState;
     private JButton undoButton;
     private JButton redoButton;
+    private PresetPanel presetPanel;
     
     
     public FractalUpdater(JPanel fractalContainer, JComboBox<String> fractalComboBox, FractalHistory fractalHistory) {
@@ -58,17 +60,22 @@ public class FractalUpdater {
                 switch (selectedFractal) {
                     case "Sierpinski Triangle":
                         fractalPanel.add(sierpinskiTriangleInstance, BorderLayout.CENTER);
+                        presetPanel = sierpinskiTriangleInstance.getPresetPanel();
                         break;
                     case "Mandelbrot Set":
                         fractalPanel.add(mandelbrotSetInstance, BorderLayout.CENTER);
+                        presetPanel = mandelbrotSetInstance.getPresetPanel();
                         break;
                     case "Koch Snowflake":
                         fractalPanel.add(kochSnowflakeInstance, BorderLayout.CENTER);
+                        presetPanel = kochSnowflakeInstance.getPresetPanel();
                         break;
                     default:
                         throw new AssertionError("Unknown fractal type");
                 }
-    
+                
+                  
+
                 return fractalPanel;
             }
     
@@ -85,6 +92,9 @@ public class FractalUpdater {
                 }
             }
         }.execute();
+    }
+    public PresetPanel getPresetPanel() {
+        return presetPanel;
     }
     
     public SierpinskiTriangle getTriangleInstance(){
