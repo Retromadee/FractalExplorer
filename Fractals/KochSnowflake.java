@@ -1,6 +1,8 @@
 package Fractals;
 
 import Panels.SnowflakePanel;
+import Panels.SnowflakePanel.ColorScheme;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -8,72 +10,96 @@ import javax.swing.*;
 public class KochSnowflake extends JPanel {
     private SnowflakePanel snowflakePanel;
     private JSpinner depthSpinner;
+    private JComboBox<String> colorSchemeBox;
     private JButton colorPickerButton;
-    private JColorChooser colorPicker;
-
-    //added constatnts to make it easier to edit later on
+    
     private static final int INITIAL_DEPTH = 3;
     private static final int MIN_DEPTH = 0;
     private static final int MAX_DEPTH = 10;
     private static final int STEP = 1;
-
-    private Color selectedColor = Color.BLACK; 
-
+    
     public KochSnowflake(SwingWorker<JPanel, Void> fractalUpdater) {
         setLayout(new BorderLayout());
-
         
-
         snowflakePanel = new SnowflakePanel();
+        
+        // Create controls
         depthSpinner = new JSpinner(new SpinnerNumberModel(INITIAL_DEPTH, MIN_DEPTH, MAX_DEPTH, STEP));
-
-        colorPicker = new JColorChooser();
-        colorPickerButton = new JButton("Pick A Color");
-       
-
-        colorPickerButton.addActionListener(_ -> {
-            Color newColor = JColorChooser.showDialog(this, "Choose Fractal Color", selectedColor);
-            if (newColor != null) {
-                selectedColor = newColor;
-                snowflakePanel.setColor(selectedColor);
-                snowflakePanel.repaint();
-            }
-        });
-        //Added to update the panel to the desired depth as soon as it launches
-        snowflakePanel.setDepth(INITIAL_DEPTH);
-
+        colorSchemeBox = new JComboBox<>(new String[]{"Classic", "Rainbow", "Cool Colors"});
+        colorPickerButton = new JButton("Background Color");
+        
+        // Set up event listeners
         depthSpinner.addChangeListener(_ -> {
             snowflakePanel.setDepth((Integer) depthSpinner.getValue());
-            snowflakePanel.repaint(); 
         });
-
+        
+        colorSchemeBox.addActionListener(_ -> {
+            String selectedScheme = (String) colorSchemeBox.getSelectedItem();
+            snowflakePanel.setColorScheme(ColorScheme.valueOf(selectedScheme.toUpperCase().replace(" ", "_")));
+        });
+        
+        colorPickerButton.addActionListener(_ -> {
+            Color newColor = JColorChooser.showDialog(this, "Choose Background Color", Color.WHITE);
+            if (newColor != null) {
+                snowflakePanel.setBackgroundColor(newColor);
+            }
+        });
+        
+        // Create control panel
         JPanel controlPanel = new JPanel();
-        controlPanel.add(new JLabel("Recursion Depth:"));
+        controlPanel.add(new JLabel("Depth:"));
         controlPanel.add(depthSpinner);
+        controlPanel.add(new JLabel("Color Scheme:"));
+        controlPanel.add(colorSchemeBox);
         controlPanel.add(colorPickerButton);
-
+        
+        // Add components to main panel
         add(controlPanel, BorderLayout.NORTH);
         add(snowflakePanel, BorderLayout.CENTER);
-    }
-    public BufferedImage captureFractal() {
-        BufferedImage image = new BufferedImage(snowflakePanel.getWidth(), snowflakePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = image.createGraphics();
-        snowflakePanel.paint(g2d);
-        g2d.dispose();
-        return image;
+        
+        // Initial setup
+        snowflakePanel.setDepth(INITIAL_DEPTH);
     }
     
-    public int getDepth() {  
+    public BufferedImage captureFractal() {
+        return snowflakePanel.captureFractal();
+    }
+    
+    public int getDepth() {
         return snowflakePanel.getDepth();
     }
+    
     public void setDepth(int depth) {
-        depthSpinner.setValue(depth);
+        if (depth >= MIN_DEPTH && depth <= MAX_DEPTH) {
+            depthSpinner.setValue(depth);
+            snowflakePanel.setDepth(depth);
+        }
     }
-    public void setColor(String colorString){
-        Color color = Color.decode(colorString);
-        snowflakePanel.setColor(color);
+    
+    public void setColor(String colorStr) {
+        snowflakePanel.setColor(colorStr);
+        if (!colorStr.startsWith("#")) {
+            String displayScheme = switch (colorStr) {
+                case "Rainbow" -> "Rainbow";
+                case "Cool Colors" -> "Cool Colors";
+                default -> "Classic";
+            };
+            colorSchemeBox.setSelectedItem(displayScheme);
+        }
     }
-    public Color getColor(){
-        return snowflakePanel.getcolor();
+    
+    public String getColor() {
+        return snowflakePanel.getColor();
+    }
+    
+    public void setColorScheme(String scheme) {
+        ColorScheme cScheme = ColorScheme.valueOf(scheme.toUpperCase().replace(" ", "_"));
+        String displayScheme = switch (cScheme) {
+            case CLASSIC -> "Classic";
+            case RAINBOW -> "Rainbow";
+            case COOL_COLORS -> "Cool Colors";
+        };
+        colorSchemeBox.setSelectedItem(displayScheme);
+        snowflakePanel.setColorScheme(cScheme);
     }
 }

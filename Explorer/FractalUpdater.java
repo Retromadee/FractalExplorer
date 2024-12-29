@@ -19,10 +19,16 @@ public class FractalUpdater {
     private KochSnowflake kochSnowflakeInstance;
     private MandelbrotSet mandelbrotSetInstance;
     private BufferedImage image;
-
-    public FractalUpdater(JPanel fractalContainer, JComboBox<String> fractalComboBox) {
+    private FractalHistory fractalHistory;
+    private FractalHistory.FractalState fractalState;
+    private JButton undoButton;
+    private JButton redoButton;
+    
+    
+    public FractalUpdater(JPanel fractalContainer, JComboBox<String> fractalComboBox, FractalHistory fractalHistory) {
         this.fractalContainer = fractalContainer;
         this.fractalComboBox = fractalComboBox;
+        this.fractalHistory = fractalHistory;
         
     }
 
@@ -96,7 +102,7 @@ public class FractalUpdater {
         File outputFile;
         switch (selectedFractal){
     
-            case "Sierpinski Triangle": 
+            case "Sierpinski Triangle":
                 image = sierpinskiTriangleInstance.captureFractal();
                 outputFile = new File("Sierpinski Triangle Fractal.png");
                 break;
@@ -105,8 +111,8 @@ public class FractalUpdater {
                 outputFile = new File("Koch Snowflake Fractal.png");
                 break;
             case "Mandelbrot Set":
-                image = mandelbrotSetInstance.captureFractal();  
-                outputFile = new File("MandelBrot Set Fractal.png");  
+                image = mandelbrotSetInstance.captureFractal();
+                outputFile = new File("MandelBrot Set Fractal.png");
                 break;
             default:
                 throw new AssertionError();}
@@ -117,23 +123,23 @@ public class FractalUpdater {
             e.printStackTrace();
             System.err.println("Error saving fractal image.");
         }
-    } 
-    public void sendParametersToClient(){
+    }
+    
+    public void sendParametersToClient() {
         String selectedFractal = (String) fractalComboBox.getSelectedItem();
         int depth;
-        String colorString = "#FFFFFF";
-        Color color;
+        String colorString;
         
         switch (selectedFractal) {
             case "Sierpinski Triangle":
                 depth = sierpinskiTriangleInstance.getDepth();
-                color = sierpinskiTriangleInstance.getColor();
-                colorString = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+                //Color triangleColor = sierpinskiTriangleInstance.getColor();
+                colorString = sierpinskiTriangleInstance.getColor();
+                //colorString = String.format("#%02x%02x%02x", triangleColor.getRed(), triangleColor.getGreen(), triangleColor.getBlue());
                 break;
             case "Koch Snowflake":
                 depth = kochSnowflakeInstance.getDepth();
-                color = kochSnowflakeInstance.getColor();
-                colorString = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+                colorString = kochSnowflakeInstance.getColor(); // Now correctly handling string return type
                 break;
             case "Mandelbrot Set":
                 depth = mandelbrotSetInstance.getIterations();
@@ -145,7 +151,16 @@ public class FractalUpdater {
         }
         String parameters = selectedFractal + " depth:" + depth + " color:" + colorString;
         FractalClient.sendFractalParameters(parameters);
+        
+        fractalHistory.saveState(selectedFractal, depth, colorString);
+        updateUndoRedoButtons();
     }
     
+    private void updateUndoRedoButtons() {
+        undoButton.setEnabled(fractalHistory.canUndo());
+        redoButton.setEnabled(fractalHistory.canRedo());
+    }
+//
+
 }
 
