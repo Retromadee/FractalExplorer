@@ -12,22 +12,18 @@ import java.util.regex.Pattern;
 import javax.swing.*;
 
 public class FractalExplorer extends JFrame {
-    private JPanel controlPanel,serverPanel,fractalContainer;
-    private JComboBox<String> fractalComboBox;
+
+    private final JPanel controlPanel;
+    private final JPanel serverPanel,fractalContainer;
+    private final JComboBox<String> fractalComboBox;
     private FractalUpdater fractalUpdater;
-    private JButton serverButton, stopServerButton, sendConfig;
-    private JLabel serverLabel;
+    private final JButton serverButton, stopServerButton, sendConfig;
+    private final JLabel serverLabel;
     private JDialog serverDialog;
     private Thread serverThread;
-    private FractalHistory fractalHistory;
-    private FractalHistory.FractalState fractalState;
-    private JButton undoButton;
-    private JButton redoButton;
-    private JMenuBar menuBar = new JMenuBar();;
-    private JMenu menu, presetMenu;
-    private JMenuItem serverSettingsMenuItem, saveImagMenuItem, presetsMenuItem;
-    
-
+    private final JMenuBar menuBar = new JMenuBar();
+    private final JMenu menu, presetMenu;
+    private final JMenuItem serverSettingsMenuItem, saveImagMenuItem, presetsMenuItem;
 
     public FractalExplorer() {
         setTitle("Fractal Explorer");
@@ -45,28 +41,8 @@ public class FractalExplorer extends JFrame {
         // Create FractalUpdater object and pass the correct components
         CardLayout cardLayout = new CardLayout();
         fractalContainer = new JPanel(cardLayout);
-        fractalUpdater = new FractalUpdater(fractalContainer, fractalComboBox,fractalHistory);
+        fractalUpdater = new FractalUpdater(fractalContainer, fractalComboBox);
         
-        fractalHistory = new FractalHistory(fractalUpdater);
-//
-//// Create undo/redo buttons
-//        undoButton = new JButton("Undo");
-//        redoButton = new JButton("Redo");
-//        undoButton.setEnabled(false);
-//        redoButton.setEnabled(false);
-//
-//        undoButton.addActionListener(_ -> {
-//            fractalHistory.undo();
-//            updateUndoRedoButtons();
-//        });
-//
-//        redoButton.addActionListener(_ -> {
-//            fractalHistory.redo();
-//            updateUndoRedoButtons();
-//        });
-//
-//        controlPanel.add(undoButton);
-//        controlPanel.add(redoButton);
 
         // ActionListener for JComboBox
         fractalComboBox.addActionListener(_ -> fractalUpdater.updateFractal());
@@ -74,28 +50,19 @@ public class FractalExplorer extends JFrame {
         // Server Label
         serverLabel = new JLabel("server not started");
 
-        serverDialog = new JDialog(this, "Server Settings", true);
+        serverDialog = new JDialog(this, "Server Settings", false);
         serverPanel = new JPanel();
-    
         serverDialog.add(serverPanel);
         
-        
-
         // Server Start Button
         serverButton = new JButton("Start Server");
-        serverButton.addActionListener(_ -> {
-            startServer();
-
-        });
+        serverButton.addActionListener(_ -> startServer());
         
         //Server Stop Button
         stopServerButton = new JButton("Stop Server");
         stopServerButton.setVisible(false);
         stopServerButton.setEnabled(false);
-        stopServerButton.addActionListener(_ ->{
-            stopServer();
-
-        }); 
+        stopServerButton.addActionListener(_ ->stopServer()); 
 
         //Sending Configs Button
         sendConfig = new JButton("Send Config");
@@ -113,7 +80,6 @@ public class FractalExplorer extends JFrame {
             serverDialog.setLocationRelativeTo(this); 
             serverDialog.setVisible(true);
         });
-
 
         //Save as Image MenuItem
         saveImagMenuItem= new JMenuItem("Save As Image");
@@ -137,7 +103,6 @@ public class FractalExplorer extends JFrame {
         add(fractalContainer, BorderLayout.CENTER);
 
         presetMenu.add(presetsMenuItem);
-
         menu.add(serverSettingsMenuItem);
         menu.add(saveImagMenuItem);
         setJMenuBar(menuBar);
@@ -149,18 +114,11 @@ public class FractalExplorer extends JFrame {
         presetFrame.setTitle("Preset Settings");
         presetFrame.setSize(400, 300); 
         presetFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
         presetFrame.pack();
         presetFrame.setLocationRelativeTo(this);
         presetFrame.setVisible(true); 
     }
-    
-    public void updateUndoRedoButtons() {
-        undoButton.setEnabled(fractalHistory.canUndo());
-        redoButton.setEnabled(fractalHistory.canRedo());
-    }
-    
-    
+        
     private void startServer() {
         // Update the label that the server is starting
         SwingUtilities.invokeLater(() -> serverLabel.setText("Starting server."));
@@ -218,7 +176,7 @@ public class FractalExplorer extends JFrame {
         MandelbrotSet mandelBrotInstance = fractalUpdater.getMandelbrotSetInstance();
         KochSnowflake kochSnowflakeInstance = fractalUpdater.getKochSnowflakeInstance();
 
-        String regex = "(Mandelbrot Set|Sierpinski Triangle|Koch Snowflake)\\s+depth:(\\d+)\\s+color:(#[0-9a-fA-F]{6}|Rainbow|Blue Orange|Cool Colors)";
+        String regex = "(Mandelbrot Set|Sierpinski Triangle|Koch Snowflake)\\s+depth:(\\d+)\\s+color:(#[0-9a-fA-F]{6}|Rainbow|Blue Orange|Cool colors|Classic)(\\s+background:(#[0-9a-fA-F]{6}))?";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
 
@@ -226,6 +184,7 @@ public class FractalExplorer extends JFrame {
             String fractalType = matcher.group(1);
             String depth = matcher.group(2);
             String color = matcher.group(3);
+            String backgroundColor = matcher.group(5); 
 
             switch (fractalType) {
                 case "Sierpinski Triangle":
@@ -233,29 +192,29 @@ public class FractalExplorer extends JFrame {
                         triangleInstance.setDepth(Integer.parseInt(depth));
                         fractalComboBox.setSelectedItem(fractalType);
                         triangleInstance.setColor(color);
-                        fractalHistory.saveState(fractalType, Integer.parseInt(depth), color);
-                        updateUndoRedoButtons();
+                        triangleInstance.setBackgroundColor(Color.decode(backgroundColor));
+                        if (backgroundColor != null) {
+                            triangleInstance.setBackgroundColor(Color.decode(backgroundColor));
+                        }
                     });
                     break;
-                
-                
                 case "Koch Snowflake":
                     SwingUtilities.invokeLater(()->{
                         kochSnowflakeInstance.setDepth(Integer.parseInt(depth));
                         fractalComboBox.setSelectedItem(fractalType);  
                         kochSnowflakeInstance.setColor(color);
-                        fractalHistory.saveState(fractalType, Integer.parseInt(depth), color);
-                        updateUndoRedoButtons();
+                        kochSnowflakeInstance.setBackgroundColor(Color.decode(backgroundColor));
+                        if (backgroundColor != null) {
+                            kochSnowflakeInstance.setBackgroundColor(Color.decode(backgroundColor));
+                        }
+
                     });
                     break;
                 case "Mandelbrot Set":
                     SwingUtilities.invokeLater(()->{
                         mandelBrotInstance.setMaxIterations(Integer.parseInt(depth));
                         fractalComboBox.setSelectedItem(fractalType);  
-                        
                         mandelBrotInstance.setColorScheme(color);
-                        fractalHistory.saveState(fractalType, Integer.parseInt(depth), color);
-                        updateUndoRedoButtons();
                     });
                     break;
                 default:

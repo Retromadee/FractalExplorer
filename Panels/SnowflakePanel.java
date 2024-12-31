@@ -1,5 +1,6 @@
 package Panels;
 
+import Explorer.FractalUpdater;
 import Presets.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,14 +20,17 @@ public class SnowflakePanel extends JPanel {
     private ColorScheme colorScheme = ColorScheme.CLASSIC;
     private Image fractalImage;
     private PresetPanel presetPanel;
+        private FractalUpdater fractalUpdater;
     
-    public SnowflakePanel() {
+    public SnowflakePanel(FractalUpdater fractalUpdater) {
+        this.fractalUpdater = fractalUpdater;
         setLayout(new BorderLayout());
         
         PresetPanel.PresetLoadCallback loadCallback = settings -> {
             depth = (Integer) settings.get("depth");
-            colorScheme = ColorScheme.valueOf((String) settings.get("colorScheme"));
+            colorScheme = ColorScheme.valueOf(((String) settings.get("colorScheme")).toUpperCase().replace(" ", "_"));
             backgroundColor = new Color((Integer) settings.get("backgroundColor"));
+            fractalUpdater.getKochSnowflakeInstance().updateGui();
             generateFractalImage();
         };
         
@@ -78,7 +82,7 @@ public class SnowflakePanel extends JPanel {
         } else {
             switch (colorStr) {
                 case "Rainbow" -> this.colorScheme = ColorScheme.RAINBOW;
-                case "Cool Colors" -> this.colorScheme = ColorScheme.COOL_COLORS;
+                case "Cool colors" -> this.colorScheme = ColorScheme.COOL_COLORS;
                 default -> {
                     this.color = Color.BLUE;
                     this.colorScheme = ColorScheme.CLASSIC;
@@ -97,7 +101,7 @@ public class SnowflakePanel extends JPanel {
         } else {
             return switch (colorScheme) {
                 case RAINBOW -> "Rainbow";
-                case COOL_COLORS -> "Cool Colors";
+                case COOL_COLORS -> "Cool colors";
                 default -> "#0000FF"; // Default blue
             };
         }

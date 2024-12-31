@@ -1,5 +1,6 @@
 package Fractals;
 
+import Explorer.FractalUpdater;
 import Panels.TrianglePanel;
 import Presets.PresetPanel;
 import java.awt.*;
@@ -17,13 +18,13 @@ public class SierpinskiTriangle extends JPanel {
     private static final int MAX_DEPTH = 7;
     private static final int STEP = 1;
     
-    public SierpinskiTriangle(SwingWorker<JPanel, Void> fractalUpdater) {
+    public SierpinskiTriangle(FractalUpdater fractalUpdater) {
         setLayout(new BorderLayout());
         
         // Create panels and controls
-        trianglePanel = new TrianglePanel();
+        trianglePanel = new TrianglePanel(fractalUpdater);
         depthSpinner = new JSpinner(new SpinnerNumberModel(INITIAL_DEPTH, MIN_DEPTH, MAX_DEPTH, STEP));
-        colorSchemeBox = new JComboBox<>(new String[]{"Classic", "Rainbow", "Cool Colors"});
+        colorSchemeBox = new JComboBox<>(new String[]{"Classic", "Rainbow", "Cool colors"});
         backgroundColorButton = new JButton("Background Color");
         
         // Set up event listeners
@@ -62,6 +63,12 @@ public class SierpinskiTriangle extends JPanel {
         trianglePanel.setDepth(INITIAL_DEPTH);
         trianglePanel.setColorScheme("Classic");
     }
+    public void updateGui() {
+        depthSpinner.setValue(trianglePanel.getDepth());
+        String colorScheme = trianglePanel.getColorScheme().replace("_", " ");
+        colorScheme = colorScheme.substring(0, 1).toUpperCase() + colorScheme.substring(1).toLowerCase();
+        colorSchemeBox.setSelectedItem(colorScheme);
+    }
     public PresetPanel getPresetPanel() {
             return trianglePanel.getPresetPanel();
         }
@@ -89,6 +96,13 @@ public class SierpinskiTriangle extends JPanel {
     public String getColor() {
         return trianglePanel.getColorScheme();
     }
+    public Color getBackgroundColor() {
+        return trianglePanel.getBackgroundColor();
+    }
+    public void setBackgroundColor(Color color) {
+        trianglePanel.setBackgroundColor(color);
+        repaint();
+    }
     
     public void setColor(String colorStr) {
         if (colorStr.startsWith("#")) {
@@ -96,7 +110,7 @@ public class SierpinskiTriangle extends JPanel {
         } else {
             String scheme = switch (colorStr) {
                 case "Rainbow" -> "Rainbow";
-                case "Cool Colors" -> "Cool Colors";
+                case "Cool colors" -> "Cool colors";
                 default -> "Classic";
             };
             colorSchemeBox.setSelectedItem(scheme);

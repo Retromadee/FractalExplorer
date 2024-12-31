@@ -1,5 +1,6 @@
 package Fractals;
 
+import Explorer.FractalUpdater;
 import Panels.SnowflakePanel;
 import Panels.SnowflakePanel.ColorScheme;
 import Presets.PresetPanel;
@@ -18,14 +19,14 @@ public class KochSnowflake extends JPanel {
     private static final int MAX_DEPTH = 10;
     private static final int STEP = 1;
     
-    public KochSnowflake(SwingWorker<JPanel, Void> fractalUpdater) {
+    public KochSnowflake(FractalUpdater fractalUpdater) {
         setLayout(new BorderLayout());
         
-        snowflakePanel = new SnowflakePanel();
+        snowflakePanel = new SnowflakePanel(fractalUpdater);
         
         // Create controls
         depthSpinner = new JSpinner(new SpinnerNumberModel(INITIAL_DEPTH, MIN_DEPTH, MAX_DEPTH, STEP));
-        colorSchemeBox = new JComboBox<>(new String[]{"Classic", "Rainbow", "Cool Colors"});
+        colorSchemeBox = new JComboBox<>(new String[]{"Classic", "Rainbow", "Cool colors"});
         colorPickerButton = new JButton("Background Color");
         
         // Set up event listeners
@@ -60,6 +61,12 @@ public class KochSnowflake extends JPanel {
         // Initial setup
         snowflakePanel.setDepth(INITIAL_DEPTH);
     }
+    public void updateGui() {
+        depthSpinner.setValue(snowflakePanel.getDepth());
+        String colorScheme = snowflakePanel.getColorScheme().toString().replace("_", " ");
+        colorScheme = colorScheme.substring(0, 1).toUpperCase() + colorScheme.substring(1).toLowerCase();
+        colorSchemeBox.setSelectedItem(colorScheme);
+    }
     public PresetPanel getPresetPanel() {
             return snowflakePanel.getPresetPanel();
         }
@@ -84,7 +91,7 @@ public class KochSnowflake extends JPanel {
         if (!colorStr.startsWith("#")) {
             String displayScheme = switch (colorStr) {
                 case "Rainbow" -> "Rainbow";
-                case "Cool Colors" -> "Cool Colors";
+                case "Cool colors" -> "Cool colors";
                 default -> "Classic";
             };
             colorSchemeBox.setSelectedItem(displayScheme);
@@ -94,13 +101,20 @@ public class KochSnowflake extends JPanel {
     public String getColor() {
         return snowflakePanel.getColor();
     }
+    public Color getBackgroundColor() {
+        return snowflakePanel.getBackgroundColor();
+    }
+    public void setBackgroundColor(Color color) {
+        snowflakePanel.setBackgroundColor(color);
+        repaint();
+    }
     
     public void setColorScheme(String scheme) {
         ColorScheme cScheme = ColorScheme.valueOf(scheme.toUpperCase().replace(" ", "_"));
         String displayScheme = switch (cScheme) {
             case CLASSIC -> "Classic";
             case RAINBOW -> "Rainbow";
-            case COOL_COLORS -> "Cool Colors";
+            case COOL_COLORS -> "Cool colors";
         };
         colorSchemeBox.setSelectedItem(displayScheme);
         snowflakePanel.setColorScheme(cScheme);

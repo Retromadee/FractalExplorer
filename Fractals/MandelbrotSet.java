@@ -1,5 +1,6 @@
 package Fractals;
 
+import Explorer.FractalUpdater;
 import Panels.MandelbrotPanel;
 import Panels.MandelbrotPanel.ColorScheme;
 import Presets.PresetPanel;
@@ -13,14 +14,10 @@ public class MandelbrotSet extends JPanel {
     private JSlider zoomSlider;
     private JComboBox<String> mandelColorBox;
 
-    // private JButton colorPicker;
-    // private Color backgroundColor = Color.BLACK;
-
-
-    public MandelbrotSet(SwingWorker<JPanel, Void> fractalUpdater) {
+    public MandelbrotSet(FractalUpdater fractalUpdater) {
         setLayout(new BorderLayout());
 
-        mandelbrotPanel = new MandelbrotPanel();
+        mandelbrotPanel = new MandelbrotPanel(fractalUpdater);
         maxIterations = new JComboBox<>(new Integer[]{25, 50, 100, 250, 500, 1000, 2500});
 
         maxIterations.setSelectedItem(1000);
@@ -33,7 +30,7 @@ public class MandelbrotSet extends JPanel {
         });
 
         // Add Zoom Slider (JSlider for Zoom)
-        zoomSlider = new JSlider(50, 1000, 200);  // Range from 50 to 1000 with initial zoom 200
+        zoomSlider = new JSlider(250, 1000, 250);  // Range from 50 to 1000 with initial zoom 200
         zoomSlider.addChangeListener(_ -> {
             mandelbrotPanel.setZoom(zoomSlider.getValue());
             // mandelbrotPanel.repaint();
@@ -50,7 +47,7 @@ public class MandelbrotSet extends JPanel {
         mandelColorBox = new JComboBox<>();
         mandelColorBox.addItem("Rainbow");
         mandelColorBox.addItem("Blue Orange");
-        mandelColorBox.addItem("Cool Colors");
+        mandelColorBox.addItem("Cool colors");
         
         mandelColorBox.addActionListener(_ ->{
             String selectedItem =(String) mandelColorBox.getSelectedItem();
@@ -58,55 +55,24 @@ public class MandelbrotSet extends JPanel {
             switch (selectedItem){
                 case "Rainbow" -> mandelbrotPanel.setColorScheme(ColorScheme.RAINBOW);
                 case "Blue Orange" -> mandelbrotPanel.setColorScheme(ColorScheme.BLUE_ORANGE);
-                case "Cool Colors" -> mandelbrotPanel.setColorScheme(ColorScheme.COOL_COLORS);
+                case "Cool colors" -> mandelbrotPanel.setColorScheme(ColorScheme.COOL_COLORS);
             }
-                // mandelbrotPanel.repaint();
             }   
         );
-        // colorPicker = new JButton("Pick Color");
-        // colorPicker.addActionListener(e -> {
-        //     JColorChooser colorChooser = new JColorChooser();
-        //     Color color = JColorChooser.showDialog(this, "Choose Background Color", Color.black);
-        //     if (color != null) {
-        //         backgroundColor = color;
-        //         mandelbrotPanel.setBackgroundColor(backgroundColor);
-        //         mandelbrotPanel.repaint();
-        //     }
-        // });
 
-        // controlPanel.add(colorPicker);
-        // mandelbrotPanel.repaint();
         controlPanel.add(mandelColorBox);
         add(controlPanel, BorderLayout.NORTH);
         add(mandelbrotPanel, BorderLayout.CENTER);
 
-        // Enable mouse click to zoom into the clicked part
-        //        mandelbrotPanel.addMouseListener(new MouseAdapter() {
-        //            @Override
-        //            public void mousePressed(MouseEvent e) {
-        //                int mouseX = e.getX();
-        //                int mouseY = e.getY();
-        //
-        //                // Convert mouse coordinates to Mandelbrot coordinates
-        //                double clickX = (mouseX - mandelbrotPanel.getWidth() / 2) /
-        //                        mandelbrotPanel.getZoom() + mandelbrotPanel.getOffsetX();
-        //                double clickY = (mouseY - mandelbrotPanel.getHeight() / 2) /
-        //                        mandelbrotPanel.getZoom() + mandelbrotPanel.getOffsetY();
-        //
-        //                // Update offsets based on click location
-        //                mandelbrotPanel.setOffsetX(clickX);
-        //                mandelbrotPanel.setOffsetY(clickY);
-        //
-        //                // Repaint after updating the center of the zoom
-        //                mandelbrotPanel.repaint();
-        //            }
-        //        });
         }
         public void updateGui(){
+            System.out.println(mandelbrotPanel.getColorScheme().toString());
             maxIterations.setSelectedItem((Integer) mandelbrotPanel.getMaxIterations());
             Double zoom = mandelbrotPanel.getZoom();
             zoomSlider.setValue((Integer) zoom.intValue());
-            mandelColorBox.setSelectedItem((ColorScheme) mandelbrotPanel.getColorScheme());
+            String colorScheme = mandelbrotPanel.getColorScheme().toString().replace("_", " ");
+            colorScheme = colorScheme.substring(0, 1).toUpperCase() + colorScheme.substring(1).toLowerCase();
+            mandelColorBox.setSelectedItem(colorScheme);
         }
         public PresetPanel getPresetPanel() {
             return mandelbrotPanel.getPresetPanel();
@@ -128,7 +94,7 @@ public class MandelbrotSet extends JPanel {
             String displayScheme = switch (cScheme) {
                 case RAINBOW -> "Rainbow";
                 case BLUE_ORANGE -> "Blue Orange";
-                case COOL_COLORS -> "Cool Colors";
+                case COOL_COLORS -> "Cool colors";
             };
             mandelColorBox.setSelectedItem(displayScheme); 
         }

@@ -1,5 +1,6 @@
 package Panels;
 
+import Explorer.FractalUpdater;
 import Presets.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,15 +14,17 @@ public class MandelbrotPanel extends JPanel {
         RAINBOW, BLUE_ORANGE, COOL_COLORS
     }
     
-    private double zoom = 200;
-    private int maxIterations = 250;
+    private double zoom = 250;
+    private int maxIterations = 1000;
     private double offsetX = -0.7, offsetY = 0.0;
     private Color backgroundColor = Color.BLACK;
     private ColorScheme colorScheme = ColorScheme.RAINBOW;
     private Image fractalImage;
     private PresetPanel presetPanel;
-    
-    public MandelbrotPanel() {
+    private FractalUpdater fractalUpdater;
+
+    public MandelbrotPanel(FractalUpdater fractalUpdater) {
+        this.fractalUpdater = fractalUpdater;
         setLayout(new BorderLayout());
         
         PresetPanel.PresetLoadCallback loadCallback = settings -> {
@@ -30,6 +33,7 @@ public class MandelbrotPanel extends JPanel {
             offsetX = (Double) settings.get("offsetX");
             offsetY = (Double) settings.get("offsetY");
             colorScheme = ColorScheme.valueOf((String) settings.get("colorScheme"));
+            fractalUpdater.getMandelbrotSetInstance().updateGui();
             generateFractalImage();
         };
         

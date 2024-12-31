@@ -1,5 +1,6 @@
 package Panels;
 
+import Explorer.FractalUpdater;
 import Presets.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,8 +16,10 @@ public class TrianglePanel extends JPanel {
     private String colorScheme = "Classic";
     private Image fractalImage;
     private PresetPanel presetPanel;
+    private FractalUpdater fractalUpdater;
     
-    public TrianglePanel() {
+    public TrianglePanel(FractalUpdater fractalUpdater) {
+        this.fractalUpdater = fractalUpdater;
         setLayout(new BorderLayout());
         
         PresetPanel.PresetLoadCallback loadCallback = settings -> {
@@ -26,6 +29,7 @@ public class TrianglePanel extends JPanel {
             if (settings.containsKey("customColor")) {
                 customColor = new Color((Integer) settings.get("customColor"));
             }
+            fractalUpdater.getTriangleInstance().updateGui();
             generateFractalImage();
         };
         
@@ -57,7 +61,7 @@ public class TrianglePanel extends JPanel {
     
     public void setColorScheme(String scheme) {
         this.colorScheme = scheme;
-        this.customColor = null;  // Reset custom color when using a scheme
+        this.customColor = null;
         generateFractalImage();
     }
     
@@ -75,6 +79,11 @@ public class TrianglePanel extends JPanel {
         this.backgroundColor = color;
         generateFractalImage();
     }
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+    
     
     private Color getCurrentColor(int depth) {
         if (customColor != null && colorScheme.equals("Custom")) {
@@ -86,7 +95,7 @@ public class TrianglePanel extends JPanel {
                 float hue = (float) depth / 7f;  // Vary hue based on depth
                 yield Color.getHSBColor(hue, 0.8f, 0.9f);
             }
-            case "Cool Colors" -> {
+            case "Cool colors" -> {
                 float hue = 0.5f + (float) depth / 14f;  // Blues to purples
                 yield Color.getHSBColor(hue, 0.7f, 0.9f);
             }
