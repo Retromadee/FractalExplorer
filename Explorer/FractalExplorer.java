@@ -176,7 +176,7 @@ public class FractalExplorer extends JFrame {
         MandelbrotSet mandelBrotInstance = fractalUpdater.getMandelbrotSetInstance();
         KochSnowflake kochSnowflakeInstance = fractalUpdater.getKochSnowflakeInstance();
 
-        String regex = "(Mandelbrot Set|Sierpinski Triangle|Koch Snowflake)\\s+depth:(\\d+)\\s+color:(#[0-9a-fA-F]{6}|Rainbow|Blue Orange|Cool colors|Classic)(\\s+background:(#[0-9a-fA-F]{6}))?";
+        String regex = "(Mandelbrot Set|Sierpinski Triangle|Koch Snowflake)\\s+depth:(\\d+)\\s+color:(Rainbow|Blue Orange|Cool colors|Classic)(\\s+background:(#[0-9a-fA-F]{6}))?";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
 

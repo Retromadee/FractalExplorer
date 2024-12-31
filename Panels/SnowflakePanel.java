@@ -93,18 +93,11 @@ public class SnowflakePanel extends JPanel {
     }
     
     public String getColor() {
-        if (colorScheme == ColorScheme.CLASSIC) {
-            return String.format("#%02x%02x%02x",
-                    color.getRed(),
-                    color.getGreen(),
-                    color.getBlue());
-        } else {
             return switch (colorScheme) {
                 case RAINBOW -> "Rainbow";
                 case COOL_COLORS -> "Cool colors";
-                default -> "#0000FF"; // Default blue
-            };
-        }
+                default -> "Classic"; // Default blue
+            }; 
     }
     
     public void generateFractalImage() {

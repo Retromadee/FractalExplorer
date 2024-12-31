@@ -95,6 +95,7 @@ public class KochSnowflake extends JPanel {
                 default -> "Classic";
             };
             colorSchemeBox.setSelectedItem(displayScheme);
+            snowflakePanel.setColorScheme(ColorScheme.valueOf(colorStr.toUpperCase().replace(" ", "_")));
         }
     }
     
