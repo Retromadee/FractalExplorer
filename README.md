@@ -1,3 +1,4 @@
+
 # FractalExplorer
 
 The Fractal Explorer is a Java-based GUI application designed to visualize and explore various fractals.
@@ -17,21 +18,39 @@ Students created a Fractal Explorer application in Java. The project involved:
 
 - Building a GUI-based application to display fractals.
 - Implementing three fractals:
-    - Sierpinski Triangle.
-    - Koch Snowflake.
-    - Mandelbrot Set.
+  - Sierpinski Triangle
+  - Koch Snowflake
+  - Mandelbrot Set
 - Adding interactive features such as:
-    - User input for recursion depth and colors.
-    - Saving fractals as images.
-- Integrating prebuilt networking code to send fractal configurations.
+  - User input for recursion depth and colors
+  - Saving fractals as images
+- Integrating prebuilt networking code to send fractal configurations
+
+## Requirements
+
+- Java JDK and SDK (version 8 or higher)
+
+## How to Run
+
+1. Extract the project and navigate to the `FractalExplorer` folder.
+2. Ensure Java JDK and SDK are installed by running `java -version` and `javac -version` in the terminal.
+3. Compile the project with:
+   ```bash
+   javac FractalExplorer.java
+   ```
+
+4. Run the project with:
+   ```bash
+   java FractalExplorer
+   ```
 
 ## Deliverables
 
 - A functional Fractal Explorer application.
 - Implementation of the Sierpinski Triangle, Koch Snowflake, and Mandelbrot Set.
 - GUI with:
-    - Depth and color controls.
-    - Save as image functionality.
+    - Depth and color controls
+    - Save as image functionality
 - Multithreaded rendering for responsiveness.
 - Integration of networking for fractal sharing.
 
