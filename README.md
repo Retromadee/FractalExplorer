@@ -43,6 +43,15 @@ Students created a Fractal Explorer application in Java. The project involved:
    ```bash
    java FractalExplorer
    ```
+## Eclipse Project RUN
+```
+Import Project Into Ecllipse
+Navigate to FractalExplorer
+Right click
+goto Build Path
+Remove any existing Build Path(If any)
+Select Use as Source Folder
+```
 
 ## Deliverables
 
